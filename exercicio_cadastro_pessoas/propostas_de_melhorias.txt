@@ -1,0 +1,20 @@
+O sistema proposto tem como objetivo realizar o cadastro de pessoas em um provável estabelecimento, 
+abrangendo clientes, funcionários e gerentes. É nítido que o sistema carece de algumas funcionalidades 
+e necessita de melhorias, as quais serão dissertadas a seguir.  
+
+Primeiramente, um tópico que me incomoda é a existência de uma classe específica para data. 
+A classe "Data" contém três atributos do tipo "int", que juntos formam uma data completa. 
+Ao utilizar essa abordagem, é possível personalizar a data conforme necessário, porém, 
+no diagrama de classes, "Data" não apresenta métodos personalizados que justifiquem essa implementação. 
+Uma sugestão é remover essa classe e utilizar a classe nativa "LocalDate" para armazenar a data de 
+nascimento das pessoas. Essa classe contém diversos métodos para manipulação de datas, como adicionar 
+um dia, realizar cálculos entre datas, entre outros, além de ser amplamente testada e confiável.  
+
+Além disso, acredito que a associação entre "CadastroPessoas" e "Pessoa" poderia ser melhorada. 
+Atualmente, a relação está definida como "1..*", o que implica que ao menos uma pessoa deve 
+estar cadastrada. No entanto, isso pode estar incorreto, pois o sistema pode ser iniciado sem 
+que nenhuma pessoa esteja previamente cadastrada. Portanto, uma melhoria seria atualizar a 
+associação entre as classes para "0..*".  
+
+Com essas melhorias, o sistema se tornaria mais refinado e robusto, proporcionando uma melhor 
+experiência ao usuário e garantindo um software de alta qualidade para o cliente.
