@@ -10,11 +10,13 @@ de um protocolo, ele impõe regras integradas que aumentam sua
 complexidade e sobrecarga, desacelerando o tempo de carregamento 
 das páginas.
 
+============================================================================================================
+
 2- Em quais cenários SOAP ainda é utilizado?
 
-SOAP é utilizado em sistemas legados, sistemas bancários e
-integrações empresariais.
+SOAP é utilizado em sistemas legados, sistemas bancários e integrações empresariais.
 
+============================================================================================================
 
 3- Quais são as vantagens e desvantagens de usar REST ao invés de SOAP?
 
@@ -23,6 +25,7 @@ quando comparado com o padrão SOAP, além de ser mais simples e flexível de se
 utilizar e fácil de escalar. Porém, Rest não é indicado para operações 
 críticas, pois não apresenta um padrão tão elevado de segunrança quanto o padrão SOAP.
 
+============================================================================================================
 
 4- O que é WS-Security e como ele se compara à segurança em APIs REST?
 
@@ -35,28 +38,41 @@ Rest adotado um modelo de segurança mais simples e fléxivel, incluíndo funcio
 
 Ainda assim, o padrão SOAP se sobressai em segurança. 
 
+============================================================================================================
+
 5- Explique o modelo de maturidade de Richardson.
 
-O modelo de maturidade de Richardson divide em 4 níveis a aderência de APIs ao padrão Rest, numerados de 0 a 3.
+O modelo de maturidade de Richardson divide em 4 níveis a aderência de APIs ao padrão Rest, 
+numerados de 0 a 3.
 
-Nível 0: neste nível, a API não utiliza os conceitos Rest, apenas usa o HTTP como meio de transporte de mensagens genéricas, usando
+Nível 0: neste nível, a API não utiliza os conceitos Rest, apenas usa o HTTP como meio de 
+transporte de mensagens genéricas, usando
 formatos como XML ou JSON. 
 
-Nível 1: neste nível, a API organiza seus dados em recursos individuais, e cada recurso recebe uma URL única, mas ainda utiliza o HTTP como 
+Nível 1: neste nível, a API organiza seus dados em recursos individuais, e cada recurso recebe 
+uma URL única, mas ainda utiliza o HTTP como 
 meio de transporte, não aproveitando todos os benefícios desse padrão. 
 
-Nível 2: esse é o nível em que a maioria das APIs hoje em dia se encontram. Utiliza dos verbos HTTP para realizar a comunicação do cliente com 
+Nível 2: esse é o nível em que a maioria das APIs hoje em dia se encontram. Utiliza dos verbos 
+HTTP para realizar a comunicação do cliente com 
 servidor de maneira semântica, tornando a API mais previsível e intuitiva.
 
-Nível 3: por fim, o nível 3 é o nível de maior maturidade atualmente que uma API pode alcançar. Nesse nível, a API não apenas expõe recursos, mas também fornece meios 
-interagir com esses recursos dinamicamente. Em um sistema nível 3, cada resposta da API contém links para ações relacionadas.
+Nível 3: por fim, o nível 3 é o nível de maior maturidade atualmente que uma API pode alcançar. 
+Nesse nível, a API não apenas expõe recursos, mas também fornece meios para interagir com esses recursos 
+dinamicamente. Em um sistema nível 3, cada resposta da API contém links para ações relacionadas.
 Isso permite que os clientes descubram funcionalidades sem depender de documentações rígidas.
+
+============================================================================================================
 
 6- O que é GraphQL? Pesquisa e relacione com os conceitos vistos em aula.
 
-GraphQL é um linguagem de consulta para APIs desenvolvido pelo Facebook. Enquanto Rest expões endpoints fixos e você necessita realizar diversas requisições para obter diferentes dados de recursos. 
-o GraphQL permite que o cliente especifique exatamente quais dados ele deseja, e a API retorna esses dados em uma única resposta.
+GraphQL é um linguagem de consulta para APIs desenvolvido pelo Facebook. Enquanto Rest expões 
+endpoints fixos e você necessita realizar diversas requisições para obter diferentes dados de recursos. 
+o GraphQL permite que o cliente especifique exatamente quais dados ele deseja, e a API retorna 
+esses dados em uma única resposta.
 
-Comparando com o conceitos vistos em sala de aula, o GraphQL é mais flexível e eficiênte quanto comparado com Rest, que por sua vez é mais flexível e eficiênte do SOAP. 
-Além disso, No GraphQL, o cliente define a forma e o conteúdo da resposta, o que evita o envio de dados desnecessários e melhora a performance. Por outro lado, GraphQL exige um maior controle no servidor
-para garantir que as consultas sejam otimizadas e seguras.  
+Comparando com o conceitos vistos em sala de aula, o GraphQL é mais flexível e eficiênte quanto 
+comparado com Rest, que por sua vez é mais flexível e eficiênte do SOAP. Além disso, No GraphQL, o
+cliente define a forma e o conteúdo da resposta, o que evita o envio de dados desnecessários e 
+melhora a performance. Por outro lado, GraphQL exige um maior controle no servidor para garantir 
+que as consultas sejam otimizadas e seguras.  
