@@ -1,9 +1,18 @@
 package br.ifsp.contacts.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+
 
 /**
  * Classe que representa o modelo de dados para um Contato.
@@ -22,9 +31,18 @@ public class Contact {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    
+    @NotBlank(message = "O nome não pode estar vazio.")
     private String nome;
+    
+    @Size(min = 8, max = 15, message = "Número incorreto. Forneça um número de 8 a 15 dígitos.")
     private String telefone;
+    
+    @Email(message = "Email inválido. Tente novamente.")
     private String email;
+    
+    @OneToMany(mappedBy = "contactId", cascade = CascadeType.ALL)
+    private List<Address> addresses = new ArrayList<>();
 
     // Construtor vazio exigido pelo JPA
     public Contact() {}
@@ -58,7 +76,16 @@ public class Contact {
     public String getEmail() {
         return email;
     }
+    
     public void setEmail(String email) {
         this.email = email;
     }
+
+	public List<Address> getAddresses() {
+		return addresses;
+	}
+
+	public void addAddresses(Address address) {
+		addresses.add(address);
+	}
 }

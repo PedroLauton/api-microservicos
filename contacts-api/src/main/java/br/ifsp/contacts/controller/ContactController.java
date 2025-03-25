@@ -18,6 +18,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import br.ifsp.contacts.model.Contact;
 import br.ifsp.contacts.repository.ContactRepository;
+import jakarta.validation.Valid;
 
 /**
  * Classe responsável por mapear as rotas/endpoints relacionados
@@ -85,7 +86,7 @@ public class ContactController {
      * com os dados JSON enviados no corpo da requisição.
      */
     @PostMapping
-    public Contact createContact(@RequestBody Contact contact) {
+    public Contact createContact(@RequestBody @Valid Contact contact) {
         return contactRepository.save(contact);
     }
 
@@ -96,7 +97,7 @@ public class ContactController {
      * Exemplo de acesso: PUT /api/contacts/1
      */
     @PutMapping("/{id}")
-    public Contact updateContact(@PathVariable Long id, @RequestBody Contact updatedContact) {
+    public Contact updateContact(@PathVariable Long id, @RequestBody @Valid Contact updatedContact) {
         // Buscar o contato existente
         Contact existingContact = contactRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Contato não encontrado: " + id));
@@ -117,7 +118,7 @@ public class ContactController {
      * Exemplo de acesso: Patch /api/contacts/1
      */
     @PatchMapping("/{id}")
-    public Contact updateSomeFields(@PathVariable Long id, @RequestBody Contact contactUpdate) {
+    public Contact updateSomeFields(@PathVariable Long id, @RequestBody @Valid Contact contactUpdate) {
     	//Caso não encontre um contato, retorna ero e o código HTTP 404.
     	Contact existingContact = contactRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Contato não encontrado"));
