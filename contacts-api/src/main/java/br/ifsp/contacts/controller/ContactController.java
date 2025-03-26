@@ -118,7 +118,7 @@ public class ContactController {
      * Exemplo de acesso: Patch /api/contacts/1
      */
     @PatchMapping("/{id}")
-    public Contact updateSomeFields(@PathVariable Long id, @RequestBody @Valid Contact contactUpdate) {
+    public Contact updateSomeFields(@PathVariable Long id, @RequestBody Contact contactUpdate) {
     	//Caso não encontre um contato, retorna ero e o código HTTP 404.
     	Contact existingContact = contactRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Contato não encontrado"));
