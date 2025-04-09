@@ -1,23 +1,28 @@
 package br.ifsp.contacts.controller;
 
-import java.util.List;
-
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.server.ResponseStatusException;
 
+import br.ifsp.contacts.dto.address.AddressRequestDTO;
+import br.ifsp.contacts.dto.address.AddressResponseDTO;
+import br.ifsp.contacts.exception.ResourceNotFoundException;
 import br.ifsp.contacts.model.Address;
+import br.ifsp.contacts.model.Contact;
 import br.ifsp.contacts.repository.AddressRepository;
 import br.ifsp.contacts.repository.ContactRepository;
 
 @RestController
-@RequestMapping("/api/contacts/{id}/addresses")
+@RequestMapping("/api/contacts")
 public class AddressController {
 	
 	@Autowired
@@ -31,18 +36,19 @@ public class AddressController {
 	@Autowired
 	private ContactRepository contactRepository;
 	
+	@Autowired
+    private ModelMapper modelMapper;
 	/*
 	 * @PathVariable capta o id enviado na URL e transforma no parâmetro do método.
 	 */
-	@GetMapping
-	public List<Address> getAddressByContacts(@PathVariable Long id){
+	@GetMapping("/{id}/addresses")
+	@ResponseStatus(HttpStatus.OK)
+	public Page<AddressResponseDTO> getAddressByContacts(@PathVariable Long id, Pageable pageable){
+		Contact contact = contactRepository.findById(id)
+			.orElseThrow(() -> new ResourceNotFoundException("Não foi possível encontrar o contato com o ID fornecido: " + id));
 		
-		contactRepository.findById(id)
-			.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Contato não encontrado"));
-		
-		List<Address> addresses = addressRepository.findByContactId(id);
-		
-		return addresses;
+		return addressRepository.findByContact(contact, pageable)
+				.map(address -> modelMapper.map(address, AddressResponseDTO.class));
 	}
 	
 	/*
@@ -51,16 +57,20 @@ public class AddressController {
 	 * e chaves do Json devem ter o mesmo nome para que o relacionamento aconteça, além da classe 
 	 * ter os getters e setters de cada atributo. 
 	 */
-	@PostMapping
-	public Address getAddressByContacts(@PathVariable Long id, @RequestBody Address address){
+	@PostMapping("/{id}/addresses")
+	@ResponseStatus(HttpStatus.CREATED)
+	public AddressResponseDTO getAddressByContacts(@PathVariable Long id, @RequestBody AddressRequestDTO addressDTO){
 		
-		contactRepository.findById(id)
-			.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Contato não encontrado"));
+		Contact contact = contactRepository.findById(id)
+			.orElseThrow(() -> new ResourceNotFoundException("Não foi possível encontrar o contato com o ID fornecido: " + id));
+		
+		//Transforma o DTO para a entidade Address
+		Address address = modelMapper.map(addressDTO, Address.class);
 		
 		// Salva o Id do contato no Address
-		address.setContactId(id);
+		address.setContact(contact);
 		
 		// Salva no repositório o  novo Address
-		return addressRepository.save(address);
+		return modelMapper.map(addressRepository.save(address), AddressResponseDTO.class);
 	}
 }

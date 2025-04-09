@@ -3,6 +3,8 @@ package br.ifsp.contacts.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -11,6 +13,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
 
@@ -35,13 +39,18 @@ public class Contact {
     @NotBlank(message = "O nome não pode estar vazio.")
     private String nome;
     
-    @Size(min = 8, max = 15, message = "Número incorreto. Forneça um número de 8 a 15 dígitos.")
+    @NotBlank(message = "O telefone não pode estar vazio")
+    @Size(min = 8, max = 15, message = "O telefone deve ter entre 8 e 15 caracteres")
+    @Pattern(regexp = "\\d+", message = "O telefone deve conter apenas números")
     private String telefone;
     
+    @NotBlank(message = "O email não pode estar vazio")
     @Email(message = "Email inválido. Tente novamente.")
     private String email;
     
-    @OneToMany(mappedBy = "contactId", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "contact", cascade = CascadeType.ALL)
+    @NotEmpty(message = "O contato deve ter pelo menos um endereço")
+    @JsonManagedReference
     private List<Address> addresses = new ArrayList<>();
 
     // Construtor vazio exigido pelo JPA
@@ -84,6 +93,19 @@ public class Contact {
 	public List<Address> getAddresses() {
 		return addresses;
 	}
+	
+	public void setAddresses(List<Address> addresses) {
+        if (addresses != null) {
+            addresses.forEach(address -> address.setContact(this)); 
+            
+            if (this.addresses == null) { 
+                this.addresses = new ArrayList<>();
+            }
+            
+            this.addresses.clear(); 
+            this.addresses.addAll(addresses);         
+        }
+    }
 
 	public void addAddresses(Address address) {
 		addresses.add(address);
